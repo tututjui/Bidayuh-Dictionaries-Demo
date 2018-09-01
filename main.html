@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<!--HEAD-->
+<head>
+	<link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+    <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+
+    <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+
+  	<script type="text/javascript">
+  		window.fn = {};
+
+		window.fn.toggleMenu = function () {
+			document.getElementById('appSplitter').left.toggle();
+		};
+
+		window.fn.loadView = function (index) {
+			document.getElementById('appTabbar').setActiveTab(index);
+			document.getElementById('sidemenu').close();
+		};
+
+		window.fn.loadLink = function (url) {
+			window.open(url, '_blank');
+		};
+
+		window.fn.pushPage = function (page, anim) {
+			if (anim) {
+				document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title }, animation: anim });
+			}
+			else {
+		    	document.getElementById('appNavigator').pushPage(page.id, { data: { title: page.title } });
+		  	}
+		};
+  	</script>
+  
+</head>
+<!--HEAD-->
+
+<!--BODY-->
+<body>
+	<ons-navigator id="appNavigator" swipeable swipe-target-width="80px">
+  		<ons-page>
+    		<ons-splitter id="appSplitter">
+      			<ons-splitter-side id="sidemenu" page="sidemenu.html" swipeable side="left" collapse="" width="260px"></ons-splitter-side>
+      			<ons-splitter-content page="tabbar.html"></ons-splitter-content>
+    		</ons-splitter>
+  		</ons-page>
+	</ons-navigator>
+
+	<template id="tabbar.html">
+	  	<ons-page id="tabbar-page">
+	    	<ons-toolbar>
+	      		<div class="center">Home</div>
+	      		<div class="left">
+	        		<ons-toolbar-button onclick="fn.toggleMenu()">
+	          			<ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+	        		</ons-toolbar-button>
+	      		</div>
+	    	</ons-toolbar>
+		    <ons-tabbar swipeable id="appTabbar" position="auto">
+		      	<ons-tab label="Home" icon="ion-home" page="home.html" active></ons-tab>
+		      	<ons-tab label="Grammar" icon="ion-edit" page="grammar.html"></ons-tab>
+		      	<ons-tab label="Translate" icon="ion-film-marker" page="translate.html"></ons-tab>
+		    </ons-tabbar>
+
+		    <script>
+		    	ons.getScriptPage().addEventListener('prechange', function(event) {
+		        if (event.target.matches('#appTabbar')) {
+		          event.currentTarget.querySelector('ons-toolbar .center').innerHTML = event.tabItem.getAttribute('label');
+		        }
+		      });
+		    </script>
+	  	</ons-page>
+	</template>
+
+<template id="sidemenu.html">
+  	<ons-page>
+    	<div class="profile-pic">
+      		<img src="https://monaca.io/img/logos/download_image_onsenui_01.png">
+    	</div>
+
+    	<!--Access-->
+
+    	<ons-list>
+
+      		<ons-list-item onclick="fn.loadView(0)">
+        		<div class="left">
+          			<ons-icon fixed-width class="list-item__icon" icon="ion-home, material:md-home"></ons-icon>
+        		</div>
+        		<div class="center">
+          				Menu
+        		</div>
+      		</ons-list-item>
+
+      		<ons-list-item onclick="fn.loadView(1)">
+        		<div class="left">
+          			<ons-icon fixed-width class="list-item__icon" icon="ion-edit, material:md-edit"></ons-icon>
+        		</div>
+        		<div class="center">
+          			Grammar
+        		</div>
+        	</ons-list-item>
+
+      		<ons-list-item onclick="fn.loadView(2)">
+        		<div class="left">
+          			<ons-icon fixed-width class="list-item__icon" icon="ion-film-marker, material: md-movie-alt"></ons-icon>
+        		</div>
+        		<div class="center">
+          			Translate
+        		</div>
+      		</ons-list-item>
+
+    	</ons-list>
+
+    	<!--Access-->
+
+    	<ons-list-title style="margin-top: 10px">Settings</ons-list-title>
+    		<ons-list>
+
+      			<ons-list-item onclick="fn.loadLink('https://onsen.io/v2/docs/guide/js/')">
+        			<div class="left">
+          				<ons-icon fixed-width class="list-item__icon" icon="fa-cog">	
+          				</ons-icon>
+        			</div>
+			        <div class="center">
+			        Apps Settings
+			        </div>
+      			</ons-list-item>
+
+      			<ons-list-item onclick="fn.loadLink('https://github.com/OnsenUI/OnsenUI')">
+			        <div class="left">
+			          	<ons-icon fixed-width class="list-item__icon" icon="ion-social-github"></ons-icon>
+			        </div>
+			        <div class="center">
+			        Help
+			        </div>
+      			</ons-list-item>
+
+				<ons-list-item onclick="fn.loadLink('https://community.onsen.io/')">
+			    	<div class="left">
+			          <ons-icon fixed-width class="list-item__icon" icon="ion-chatboxes"></ons-icon>
+			        </div>
+			        <div class="center">
+			        About
+			        </div>
+				</ons-list-item>
+    		</ons-list>
+
+	    <script>
+	      ons.getScriptPage().onInit = function() {
+	        // Set ons-splitter-side animation
+	        this.parentElement.setAttribute('animation', ons.platform.isAndroid() ? 'overlay' : 'reveal');
+	      };
+	    </script>
+
+	    <style>
+	      .profile-pic {
+	        width: 100%;
+	        background-color: #fff;
+	        margin: 0px auto;
+	      }
+
+	      .profile-pic > img {
+	        display: block;
+	        max-width: 100%;
+	      }
+	    </style>
+  	</ons-page>
+</template>
+
+<!--tab menu-->
+
+<!--HOME-->
+
+<template id="home.html">
+  <ons-page id="homE">
+    
+    <ons-card onclick="fn.pushPage({'id': 'dialogs.html', 'title': 'Dialogs'})">
+      <div class="title"><b>Dialogs</b></div>
+      <div class="content">c</div>
+    </ons-card>
+
+
+    <style>
+      .intro {
+        text-align: center;
+        padding: 0 20px;
+        margin-top: 40px;
+      }
+
+      ons-card {
+        cursor: pointer;
+        color: #333;
+      }
+
+      .card__title,
+      .card--material__title {
+        font-size: 20px;
+      }
+    </style>
+  </ons-page>
+</template>
+
+<!--GRAMMAR-->
+
+<template id="grammar.html">
+  	<ons-page id="forms-page">
+    
+  	</ons-page>
+</template>
+
+<!--TRANSLATE-->
+
+<template id="translate.html">
+  <ons-page>
+    
+  </ons-page>
+</template>
+
+<!--Dialogs on home-->
+<!--dialogs.html-->
+
+<template id="dialogs.html">
+	<ons-page>
+    	<ons-toolbar>
+      		<div class="left">
+        		<ons-back-button>Home</ons-back-button>
+      		</div>
+      		<div class="center">Dialogs 123</div>
+      		<div class="right">
+        		<ons-toolbar-button id="info-button" onclick="fn.showDialog('popover-dialog')"></ons-toolbar-button>
+      		</div>
+    	</ons-toolbar>
+
+    <!--Language group-- start-->	
+
+    <ons-list-title>Bidayuh</ons-list-title>
+    <ons-list modifier="inset">
+
+      	<ons-list-item>
+        	<div class="center">Alert</div>
+      	</ons-list-item>
+
+      	<ons-list-item>
+        	<div class="center">Alert</div>
+      	</ons-list-item>
+
+      	<ons-list-item>
+        	<div class="center">Alert</div>
+      	</ons-list-item>
+
+    </ons-list>
+
+    <ons-list-title>Malay</ons-list-title>
+    <ons-list modifier="inset">
+
+      	<ons-list-item>
+        	<div class="center">Alert</div>
+      	</ons-list-item>
+
+    </ons-list>
+
+    <ons-list-title>English</ons-list-title>
+    <ons-list modifier="inset">
+
+      	<ons-list-item>
+        	<div class="center">Alert</div>
+      	</ons-list-item>
+
+    </ons-list>
+
+    <!--Language group-- end-->
+
+    <style>
+      #lorem-dialog .dialog-container {
+        height: 200px;
+      }
+
+      ons-list-title {
+        margin-top: 20px;
+      }
+    </style>
+  </ons-page>
+</template>
+
+
+<!--Dialogs on home above-->
+
+<style>
+  ons-splitter-side[animation=overlay] {
+    border-left: 1px solid #bbb;
+  }
+</style>
+</body>
+<!--BODY-->
+
+</html>
